@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
+import { CssBaseline } from '@material-ui/core';
 import Products from "./components/Products/Products";
+import Cart from "./components/Cart/Cart";
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+
 import { commerce } from "./lib/commerce";
 
 function App() {
@@ -31,11 +35,21 @@ function App() {
   }, []);
   console.log(products)
   return (
-    <div>
-      <Navbar totalItems={cart.total_items}/>
-
-      <Products products={products} onAddToCart={handleAddToCart}/>
+    <Router>
+    <div style={{ display: 'flex' }}>
+      <CssBaseline />
+      <Navbar totalItems={cart.total_items}  />
+      <Switch>
+        <Route exact path="/">
+          <Products products={products} onAddToCart={handleAddToCart}  />
+        </Route>
+        <Route exact path="/cart">
+          <Cart cart={cart}   />
+        </Route>
+       
+      </Switch>
     </div>
+  </Router>
   );
 }
 
