@@ -7,6 +7,8 @@ import useStyles from './styles';
 
 const Navbar = ({totalItems}) => {
     const classes = useStyles()
+
+    const location = useLocation()
     return (
         <>
         <AppBar position="fixed" className={classes.appBar} color="inherit">
@@ -19,14 +21,16 @@ const Navbar = ({totalItems}) => {
                 <div className={classes.grow}>
 
                 </div>
-                <div className={classes.button}>
+
+                {location.pathname === '/' && ( <div className={classes.button}>
                     <IconButton  component={Link} to="/cart" aria-label="Show cart items" color="inherit">
                         <Badge badgeContent={totalItems} color="secondary">
                             <ShoppingCart />
                         </Badge>
                     </IconButton>
 
-                </div>
+                </div>)}
+               
 
 
             </Toolbar>

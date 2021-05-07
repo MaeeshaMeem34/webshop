@@ -4,12 +4,13 @@ import { Link } from "react-router-dom";
 
 import useStyles from './styles'
 import CartItem from "./CartItem/CartItem";
-const Cart = ({ cart }) => {
+const Cart = ({ cart,onUpdateCartQty, onRemoveFromCart, onEmptyCart }) => {
     const classes = useStyles()
  
   const EmptyCart = () => {
     return (<Typography variant="subtitle1">
-      You have no item in the cart, start adding some items!{" "}
+      You have no item in the cart!!:(
+      <Link to='/'> start adding some items! </Link>
     </Typography>);
   };
 
@@ -20,7 +21,7 @@ const Cart = ({ cart }) => {
         {cart.line_items.map((item) => (
           <Grid xs={12} sm={4} key={item.id}>
            
-           <CartItem item={item}/> 
+           <CartItem item={item} onUpdateCartQty={onUpdateCartQty} onRemoveFromCart={onRemoveFromCart}/> 
           </Grid>
         ))}
       </Grid>
@@ -32,8 +33,8 @@ const Cart = ({ cart }) => {
         </Typography>
 
         <div>
-            <Button className={classes.emptyButton} size="large" type="button" variant="contained" color="secondary"> Empty Cart </Button>
-            <Button className={classes.checkoutButton} size="large" type="button" variant="contained" color="primary"> Check Out</Button>
+            <Button className={classes.emptyButton} size="large" type="button" variant="contained" color="secondary" onClick={onEmptyCart}> Empty Cart </Button>
+            <Button component={Link} className={classes.checkoutButton} size="large" type="button" variant="contained" color="primary"> Check Out</Button>
         </div>
       </div>
     </>
