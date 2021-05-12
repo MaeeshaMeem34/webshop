@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import FormInput from './CustomTextField'
 import {commerce}  from '../../lib/commerce'
 
-const AddressForm = ({checkoutToken}) => {
+const AddressForm = ({checkoutToken,next}) => {
 
     const [shippingCountries, setShippingCountries] = useState([]);
   const [shippingCountry, setShippingCountry] = useState('');
@@ -54,7 +54,7 @@ const AddressForm = ({checkoutToken}) => {
         <>
             <Typography variant='h6' gutterBottom> Shipping Address </Typography>
             <FormProvider {...methods}>
-                <form onSubmit=''>
+                <form onSubmit={methods.handleSubmit((data)=> next({...data, shippingCountry,shippingOption,shippingSubdivision}))}>
                     <Grid container spacing={3}>
                         <FormInput required name='firstName' label="First Name" />
                         <FormInput required name='lastName' label="Last Name" />
@@ -75,19 +75,23 @@ const AddressForm = ({checkoutToken}) => {
 
                         <Grid item xs={12} sm={6}>
                             <InputLabel> Shipping Subdivisions</InputLabel>
-                            <Select value={} fullWidth onChange={}>
-                                <MenuItem key={} value={}>
-                                    Select me
-                                </MenuItem>
+                            <Select value={shippingSubdivision} fullWidth onChange={(e) => setShippingSubdivision(e.target.value)}>
+                            {Object.entries(shippingSubdivisions).map(([code, name]) => ({ id: code, label: name })).map((item) => (
+                  <MenuItem key={item.id} value={item.id}>
+                    {item.label}
+                  </MenuItem>
+                ))}
                             </Select>
                         </Grid>
                          
                         <Grid item xs={12} sm={6}>
                             <InputLabel> Shipping options</InputLabel>
-                            <Select value={} fullWidth onChange={}>
-                                <MenuItem key={} value={}>
-                                    Select me
-                                </MenuItem>
+                            <Select value={shippingOption} fullWidth onChange={(e) => setShippingOption(e.target.value)}>
+                            {shippingOptions.map((sO) => ({ id: sO.id, label: `${sO.description} - (${sO.price.formatted_with_symbol})` })).map((item) => (
+                  <MenuItem key={item.id} value={item.id}>
+                    {item.label}
+                  </MenuItem>
+                ))}
                             </Select>
                         </Grid> 
 
