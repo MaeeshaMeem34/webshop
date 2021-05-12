@@ -66,7 +66,7 @@ function App() {
           <Cart cart={cart}   onUpdateCartQty={handleUpdateCartQty} onRemoveFromCart={handleRemoveFromCart} onEmptyCart={handleEmptyCart}/>
         </Route>
         <Route exact path="/checkout">
-          <Checkout />
+          <Checkout cart={cart}/>
 
         </Route>
        

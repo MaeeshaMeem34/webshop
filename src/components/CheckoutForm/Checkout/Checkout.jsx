@@ -1,23 +1,40 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { CssBaseline, Paper, Stepper, Step, StepLabel, Typography, CircularProgress, Divider, Button } from '@material-ui/core';
 import { Link, useHistory } from 'react-router-dom';
 import AddressForm from '../AddressForm'
 import PaymentForm from '../PaymentForm'
 
 import useStyles from './styles'
+import { commerce } from '../../../lib/commerce';
 
 const steps= ['shipping address','Payment details']
 
-const Checkout = () => {
+const Checkout = ({cart}) => {
     const classes = useStyles()
     const [activeStep, setActiveStep] = useState(0);
+    const [checkoutToken, setCheckoutToken] = useState(null)
+
+    useEffect(() => {
+        const generateToken = async()=>{
+            try{
+                const token = await commerce.checkout.generateToken(cart.id, {type: 'cart'})
+                setCheckoutToken(token)
+
+            }
+            catch(error){
+
+            }
+        }
+        generateToken()
+     
+    }, [cart])
 
 
     const Confirmation =()=>(
         <div> confirm </div>
     )
 
-    const Form =()=> activeStep === 0 ? <AddressForm /> 
+    const Form =()=> activeStep === 0 ? <AddressForm  checkoutToken={checkoutToken} /> 
     : <PaymentForm/>
     return (
         <>
@@ -34,7 +51,7 @@ const Checkout = () => {
 
                 </Stepper>
 
-                {activeStep === steps.length ? <Confirmation /> : <Form /> }
+                {activeStep === steps.length ? <Confirmation /> : checkoutToken && <Form /> }
             </Paper>
         </main>
             
