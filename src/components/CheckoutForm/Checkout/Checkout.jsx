@@ -23,6 +23,7 @@ const Checkout = ({cart, order, handleCaptureCheckout, error}) => {
 
             }
             catch(error){
+                console.log(error)
 
             }
         }
@@ -41,14 +42,40 @@ const next = (data)=>{
 
 }
 
-    const Confirmation =()=>(
-        <div> confirm </div>
-    )
+
+let Confirmation = () => (order.customer ? (
+    <>
+      <div>
+        <Typography variant="h5">Thank you for your purchase, {order.customer.firstname} {order.customer.lastname}!</Typography>
+        <Divider className={classes.divider} />
+        <Typography variant="subtitle2">Order ref: {order.customer_reference}</Typography>
+      </div>
+      <br />
+      <Button component={Link} variant="outlined" type="button" to="/">Back to home</Button>
+    </>
+  ) : (
+    <div className={classes.spinner}>
+      <CircularProgress />
+    </div>
+  ));
+
+  if (error) {
+    Confirmation = () => (
+      <>
+        <Typography variant="h5">Error: {error}</Typography>
+        <br />
+        <Button component={Link} variant="outlined" type="button" to="/">Back to home</Button>
+      </>
+    );
+  }
+
+  
 
     const Form =()=> activeStep === 0 ? <AddressForm  checkoutToken={checkoutToken} next={next}/> 
     : <PaymentForm shippingData={shippingData} checkoutToken={checkoutToken} backStep={backStep} handleCaptureCheckout={handleCaptureCheckout} nextStep={nextStep} />
     return (
         <>
+        <CssBaseline />
         <div className={classes.toolbar}/>
         <main className={classes.layout} >
             <Paper className={classes.paper} >
