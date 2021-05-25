@@ -13,6 +13,7 @@ function FormInput({ name, label, required }) {
         <TextField {...field} label={label} required={required}/>)}
         name={name}
         control={control}
+        defaultValue=""
        
         fullWidth
         
